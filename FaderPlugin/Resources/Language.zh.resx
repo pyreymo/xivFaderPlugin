@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ChatPluginDisabled" xml:space="preserve">
+    <value>Fader Plugin 已禁用。</value>
+  </data>
+  <data name="ChatPluginEnabled" xml:space="preserve">
+    <value>Fader Plugin 已启用。</value>
+  </data>
+  <data name="AboutAuthor" xml:space="preserve">
+    <value>作者：</value>
+  </data>
+  <data name="AboutVersion" xml:space="preserve">
+    <value>版本：</value>
+  </data>
+  <data name="AboutIssues" xml:space="preserve">
+    <value>问题反馈</value>
+  </data>
+  <data name="AboutThread" xml:space="preserve">
+    <value>Discord 讨论</value>
+  </data>
+  <data name="AboutKoFi" xml:space="preserve">
+    <value>Ko-Fi 打赏</value>
+  </data>
+  <data name="TabAbout" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="TabSettings" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="SettingsGeneralHeader" xml:space="preserve">
+    <value>通用设置</value>
+  </data>
+  <data name="SettingsFocusKey" xml:space="preserve">
+    <value>「用户聚焦时」触发键：</value>
+  </data>
+  <data name="SettingsFocusKeyTooltip" xml:space="preserve">
+    <value>按住该键时，会满足「用户聚焦时」触发条件。</value>
+  </data>
+  <data name="SettingsFocusHotbarUnlock" xml:space="preserve">
+    <value>热键栏解锁时也算作「用户聚焦时」</value>
+  </data>
+  <data name="SettingsFocusHotbarUnlockTooltip" xml:space="preserve">
+    <value>热键栏或十字热键栏解锁时，始终满足「用户聚焦时」触发条件。</value>
+  </data>
+  <data name="SettingsEmoteActivity" xml:space="preserve">
+    <value>情感动作也算作「有新聊天消息时」</value>
+  </data>
+  <data name="SettingsSystemTrigger" xml:space="preserve">
+    <value>系统消息也算作「有新聊天消息时」</value>
+  </data>
+  <data name="SettingsDelay" xml:space="preserve">
+    <value>触发条件结束后继续保持：</value>
+  </data>
+  <data name="SettingsDelayTooltip" xml:space="preserve">
+    <value>触发条件结束后，继续保持刚才的显示规则多久，再恢复到「平时」显示规则。</value>
+  </data>
+  <data name="SettingsChatActivityTimeout" xml:space="preserve">
+    <value>「有新聊天消息时」保持：</value>
+  </data>
+  <data name="SettingsMultiSelectionHint" xml:space="preserve">
+    <value>提示：按住 Ctrl 键可选择多个组件一起编辑。右侧会以最先选中的组件为模板；修改规则后会应用到所有已选组件。</value>
+  </data>
+  <data name="SettingsElementConfiguration" xml:space="preserve">
+    <value>{0} 显示规则</value>
+  </data>
+  <data name="SettingsOthers" xml:space="preserve">
+    <value>其他</value>
+  </data>
+  <data name="SettingsSyncToElement" xml:space="preserve">
+    <value>用 {0} 的显示规则覆盖其他已选组件</value>
+  </data>
+  <data name="Seconds" xml:space="preserve">
+    <value>秒</value>
+  </data>
+  <data name="StateEnemyTarget" xml:space="preserve">
+    <value>以敌方为目标时</value>
+  </data>
+  <data name="StatePlayerTarget" xml:space="preserve">
+    <value>以玩家为目标时</value>
+  </data>
+  <data name="StateNPCTarget" xml:space="preserve">
+    <value>以 NPC 为目标时</value>
+  </data>
+  <data name="StateWeaponUnsheathed" xml:space="preserve">
+    <value>武器拔出时</value>
+  </data>
+  <data name="StateInSanctuary" xml:space="preserve">
+    <value>位于休息区时</value>
+  </data>
+  <data name="StateInFateArea" xml:space="preserve">
+    <value>位于 FATE 区域时</value>
+  </data>
+  <data name="StateIsMoving" xml:space="preserve">
+    <value>移动时</value>
+  </data>
+  <data name="StateIslandSanctuary" xml:space="preserve">
+    <value>位于无人岛时</value>
+  </data>
+  <data name="StateChatActivity" xml:space="preserve">
+    <value>有新聊天消息时</value>
+  </data>
+  <data name="StateChatFocus" xml:space="preserve">
+    <value>消息窗口聚焦时</value>
+  </data>
+  <data name="StateUserFocus" xml:space="preserve">
+    <value>用户聚焦时</value>
+  </data>
+  <data name="StateAltKey" xml:space="preserve">
+    <value>按住 ALT 键时</value>
+  </data>
+  <data name="StateCtrlKey" xml:space="preserve">
+    <value>按住 CTRL 键时</value>
+  </data>
+  <data name="StateShiftKey" xml:space="preserve">
+    <value>按住 SHIFT 键时</value>
+  </data>
+  <data name="StateNone" xml:space="preserve">
+    <value>选择触发条件</value>
+  </data>
+  <data name="StateDefault" xml:space="preserve">
+    <value>平时</value>
+  </data>
+  <data name="StateDuty" xml:space="preserve">
+    <value>任务中</value>
+  </data>
+  <data name="StateCrafting" xml:space="preserve">
+    <value>制作中</value>
+  </data>
+  <data name="StateGathering" xml:space="preserve">
+    <value>采集中</value>
+  </data>
+  <data name="StateMounted" xml:space="preserve">
+    <value>骑乘中</value>
+  </data>
+  <data name="StateCombat" xml:space="preserve">
+    <value>战斗中</value>
+  </data>
+  <data name="SettingsShow" xml:space="preserve">
+    <value>显示</value>
+  </data>
+  <data name="SettingsHide" xml:space="preserve">
+    <value>隐藏</value>
+  </data>
+  <data name="SettingsUnknown" xml:space="preserve">
+    <value>未知</value>
+  </data>
+  <data name="ElementHotbar1" xml:space="preserve">
+    <value>热键栏1</value>
+  </data>
+  <data name="ElementHotbar2" xml:space="preserve">
+    <value>热键栏2</value>
+  </data>
+  <data name="ElementHotbar3" xml:space="preserve">
+    <value>热键栏3</value>
+  </data>
+  <data name="ElementHotbar4" xml:space="preserve">
+    <value>热键栏4</value>
+  </data>
+  <data name="ElementHotbar5" xml:space="preserve">
+    <value>热键栏5</value>
+  </data>
+  <data name="ElementHotbar6" xml:space="preserve">
+    <value>热键栏6</value>
+  </data>
+  <data name="ElementHotbar7" xml:space="preserve">
+    <value>热键栏7</value>
+  </data>
+  <data name="ElementHotbar8" xml:space="preserve">
+    <value>热键栏8</value>
+  </data>
+  <data name="ElementHotbar9" xml:space="preserve">
+    <value>热键栏9</value>
+  </data>
+  <data name="ElementHotbar10" xml:space="preserve">
+    <value>热键栏10</value>
+  </data>
+  <data name="ElementCrossHotbar" xml:space="preserve">
+    <value>十字热键栏</value>
+  </data>
+  <data name="ElementPetHotbar" xml:space="preserve">
+    <value>特殊热键栏</value>
+  </data>
+  <data name="ElementContextActionHotbar" xml:space="preserve">
+    <value>任务指令</value>
+  </data>
+  <data name="ElementCastbar" xml:space="preserve">
+    <value>咏唱栏</value>
+  </data>
+  <data name="ElementInventoryGrid" xml:space="preserve">
+    <value>背包缩略图</value>
+  </data>
+  <data name="ElementScenarioGuide" xml:space="preserve">
+    <value>主线向导</value>
+  </data>
+  <data name="ElementIslekeepIndex" xml:space="preserve">
+    <value>开拓管理面板</value>
+  </data>
+  <data name="ElementDutyList" xml:space="preserve">
+    <value>任务列表</value>
+  </data>
+  <data name="ElementServerInformation" xml:space="preserve">
+    <value>基本情报</value>
+  </data>
+  <data name="ElementMainMenu" xml:space="preserve">
+    <value>快捷指令</value>
+  </data>
+  <data name="ElementTargetInfo" xml:space="preserve">
+    <value>目标信息</value>
+  </data>
+  <data name="ElementPartyList" xml:space="preserve">
+    <value>小队列表</value>
+  </data>
+  <data name="ElementLimitBreak" xml:space="preserve">
+    <value>极限槽</value>
+  </data>
+  <data name="ElementStatusEnhancements" xml:space="preserve">
+    <value>状态效果：强化状态</value>
+  </data>
+  <data name="ElementStatusEnfeeblements" xml:space="preserve">
+    <value>状态效果：弱化状态</value>
+  </data>
+  <data name="ElementStatusOther" xml:space="preserve">
+    <value>状态效果：其他状态</value>
+  </data>
+  <data name="ElementUnknown" xml:space="preserve">
+    <value>未知组件</value>
+  </data>
+  <data name="ElementJob" xml:space="preserve">
+    <value>职业量谱</value>
+  </data>
+  <data name="ElementCurrency" xml:space="preserve">
+    <value>所持金币</value>
+  </data>
+  <data name="ElementQuestLog" xml:space="preserve">
+    <value>任务日志</value>
+  </data>
+  <data name="ElementChat" xml:space="preserve">
+    <value>消息窗口</value>
+  </data>
+  <data name="ElementMinimap" xml:space="preserve">
+    <value>导向地图</value>
+  </data>
+  <data name="ElementNameplate" xml:space="preserve">
+    <value>名牌</value>
+  </data>
+  <data name="ElementParameters" xml:space="preserve">
+    <value>角色参数</value>
+  </data>
+  <data name="ElementStatus" xml:space="preserve">
+    <value>状态效果</value>
+  </data>
+  <data name="ElementTooltipChat" xml:space="preserve">
+    <value>「消息窗口聚焦时」应始终可见，但在某些配置下此功能可能不稳定。</value>
+  </data>
+  <data name="ElementTooltipCrosshotbar" xml:space="preserve">
+    <value>双十字热键栏默认会随十字热键栏一起显示。若要单独调整位置，请在游戏内「角色设置」→「热键栏设置」→「十字热键栏」→「双十字热键栏显示设置」中启用「与十字热键栏分开设置位置」。</value>
+  </data>
+  <data name="ElementTooltipActionHotbar" xml:space="preserve">
+    <value>例如无人岛、异闻迷宫或特定场景中的动作。</value>
+  </data>
+  <data name="ElementTooltipPetHotbar" xml:space="preserve">
+    <value>包括行动指令（搭档、冒险者分队、召唤兽），表演用特殊热键栏（坐骑、时尚配饰）。</value>
+  </data>
+  <data name="ElementTooltipJob" xml:space="preserve">
+    <value>包括职业量谱的相关组件。</value>
+  </data>
+  <data name="ElementTooltipStatus" xml:space="preserve">
+    <value>仅合并为1个窗口显示时生效。</value>
+  </data>
+  <data name="ElementTooltipStatusEnfeeblements" xml:space="preserve">
+    <value>仅分成3组/4组窗口显示时生效。</value>
+  </data>
+  <data name="ElementTooltipStatusEnhancements" xml:space="preserve">
+    <value>仅分成3组/4组窗口显示时生效。</value>
+  </data>
+  <data name="ElementTooltipStatusOther" xml:space="preserve">
+    <value>仅分成3组/4组窗口显示时生效。</value>
+  </data>
+  <data name="StateHover" xml:space="preserve">
+    <value>鼠标悬停时</value>
+  </data>
+  <data name="Milliseconds" xml:space="preserve">
+    <value>毫秒</value>
+  </data>
+  <data name="Opacity" xml:space="preserve">
+    <value>透明度</value>
+  </data>
+  <data name="SettingsDisable" xml:space="preserve">
+    <value>完全禁用组件</value>
+  </data>
+  <data name="SettingsDisableTooltip" xml:space="preserve">
+    <value>当某个触发条件下的透明度低于 0.05 时，允许完全禁用该组件。</value>
+  </data>
+  <data name="SettingsEnterTransition" xml:space="preserve">
+    <value>淡入时间：</value>
+  </data>
+  <data name="SettingsEnterTransitionTooltip" xml:space="preserve">
+    <value>组件淡入所需的时间，单位为毫秒。</value>
+  </data>
+  <data name="SettingsExitTransition" xml:space="preserve">
+    <value>淡出时间：</value>
+  </data>
+  <data name="SettingsExitTransitionTooltip" xml:space="preserve">
+    <value>组件淡出所需的时间，单位为毫秒。</value>
+  </data>
+  <data name="StateWarning" xml:space="preserve">
+    <value>警告：已禁用的组件无法响应鼠标悬停！</value>
+  </data>
+  <data name="StateOccupied" xml:space="preserve">
+    <value>忙碌时</value>
+  </data>
+  <data name="TabHoverGroups" xml:space="preserve">
+    <value>悬停分组</value>
+  </data>
+  <data name="HoverGroupNewGroup" xml:space="preserve">
+    <value>新分组</value>
+  </data>
+  <data name="HoverGroupsAddGroup" xml:space="preserve">
+    <value>添加分组</value>
+  </data>
+  <data name="HoverGroupsElements" xml:space="preserve">
+    <value>分组中的组件</value>
+  </data>
+  <data name="HoverGroupsHint" xml:space="preserve">
+    <value>选择一个分组来编辑其详细设置。</value>
+  </data>
+  <data name="HoverGroupsTutorialBody1" xml:space="preserve">
+    <value>从左侧选择已有分组，或点击“添加分组”创建新分组。</value>
+  </data>
+  <data name="HoverGroupsTutorialBody2" xml:space="preserve">
+    <value>使用复选框将组件加入该分组。</value>
+  </data>
+  <data name="HoverGroupsTutorialBody3" xml:space="preserve">
+    <value>当你悬停在分组内任意组件上时，</value>
+  </data>
+  <data name="HoverGroupsTutorialBody4" xml:space="preserve">
+    <value>该分组内所有组件都会满足「鼠标悬停时」触发条件。</value>
+  </data>
+  <data name="HoverGroupsTutorialHeader" xml:space="preserve">
+    <value>使用方法：</value>
+  </data>
+  <data name="SettingsFadeOverride" xml:space="preserve">
+    <value>覆盖全局淡入淡出时间</value>
+  </data>
+  <data name="StateLeftBumper" xml:space="preserve">
+    <value>按住 LB 键时</value>
+  </data>
+  <data name="StateLeftTrigger" xml:space="preserve">
+    <value>按住 LT 键时</value>
+  </data>
+  <data name="StateRightBumper" xml:space="preserve">
+    <value>按住 RB 键时</value>
+  </data>
+  <data name="StateRightTrigger" xml:space="preserve">
+    <value>按住 RT 键时</value>
+  </data>
+  <data name="ElementStatusConditional" xml:space="preserve">
+    <value>状态效果：前置条件状态</value>
+  </data>
+  <data name="ElementTooltipStatusConditional" xml:space="preserve">
+    <value>仅分成4组窗口显示时生效。</value>
+  </data>
+  <data name="StateGatheringNodeTarget" xml:space="preserve">
+    <value>以采集点为目标时</value>
+  </data>
+  <data name="ElementCosmicExotablet" xml:space="preserve">
+    <value>宇宙探索专用平板</value>
+  </data>
+  <data name="ElementAllianceList1" xml:space="preserve">
+    <value>团队列表1</value>
+  </data>
+  <data name="ElementAllianceList2" xml:space="preserve">
+    <value>团队列表2</value>
+  </data>
+  <data name="ElementOccultCrescentHud" xml:space="preserve">
+    <value>新月岛界面</value>
+  </data>
+  <data name="ElementBozjaHud" xml:space="preserve">
+    <value>博兹雅界面</value>
+  </data>
+  <data name="ElementEurekaElementalHud" xml:space="preserve">
+    <value>优雷卡属性轮盘</value>
+  </data>
+  <data name="ElementEurekaLogosHud" xml:space="preserve">
+    <value>优雷卡文理技能</value>
+  </data>
+  <data name="ElementExperienceBar" xml:space="preserve">
+    <value>经验值栏</value>
+  </data>
+  <data name="SettingsRelativeOpacityTooltip" xml:space="preserve">
+    <value>启用后，插件的所有透明度值都会乘以游戏内布局透明度。
+这样插件只会在游戏内透明度设置的范围内工作。
+例如：游戏内 60% * 插件 50% =&gt; 最终透明度为 30%。</value>
+  </data>
+  <data name="SettingsRelativeOpacity" xml:space="preserve">
+    <value>相对透明度</value>
+  </data>
+  <data name="ElementCosmicAnnouncements" xml:space="preserve">
+    <value>宇宙探索信息</value>
+  </data>
+</root>
