@@ -21,10 +21,7 @@ public partial class ConfigWindow
             return;
 
         var style = ImGui.GetStyle();
-        var buttonWidth = ImGui.CalcTextSize("Context Action Hotbar   ?").X
-                          + style.FramePadding.X * 2
-                          + style.ScrollbarSize;
-        var childSize = buttonWidth + style.WindowPadding.X * 2;
+        var (buttonWidth, childSize) = GetElementListSizes();  // sync width
 
         // Left Pane: List of groups.
         using (var leftChild = ImRaii.Child("HoverGroupsList", new Vector2(childSize, 0), true))
@@ -53,7 +50,7 @@ public partial class ConfigWindow
                     }
                     if (ImGui.IsItemHovered())
                     {
-                        var addonNames = group.Elements.SelectMany(element => ElementUtil.GetAddonName(element)).ToArray();
+                        var addonNames = group.Elements.SelectMany(ElementUtil.GetAddonName).ToArray();
                         if (addonNames.Length == 0)
                             continue;
 
@@ -100,11 +97,13 @@ public partial class ConfigWindow
             }
 
             // right align delete button.
-            var deleteButtonMargin = ImGui.GetContentRegionAvail().X - 15;
-            ImGui.SameLine(deleteButtonMargin);
+            var deleteIcon = FontAwesomeIcon.TrashAlt.ToIconString();
             using (ImRaii.PushFont(UiBuilder.IconFont))
             {
-                if (ImGui.Button($"{FontAwesomeIcon.TrashAlt.ToIconString()}##{groupName}-delete"))
+                var deleteButtonWidth = ImGui.CalcTextSize(deleteIcon).X + ImGui.GetStyle().FramePadding.X * 2;
+                ImGui.SameLine(ImGui.GetContentRegionAvail().X - deleteButtonWidth);
+
+                if (ImGui.Button($"{deleteIcon}##{groupName}-delete"))
                 {
                     Configuration.HoverGroups.RemoveAt(SelectedHoverGroupIndex);
                     SelectedHoverGroupIndex = -1;

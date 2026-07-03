@@ -20,6 +20,7 @@ public partial class ConfigWindow
     private readonly List<Element> SelectedElements = [];
     private const float AlphaTolerance = 1f / 255f;
     private Constants.OverrideKeys CurrentOverrideKey => (Constants.OverrideKeys)Configuration.OverrideKey;
+    private const string ElementTooltipIndicator = "   ?";
 
     private void Settings()
     {
@@ -32,12 +33,10 @@ public partial class ConfigWindow
         if (ImGui.CollapsingHeader(Language.SettingsGeneralHeader, ImGuiTreeNodeFlags.DefaultOpen))
         {
             // Create a 2-column table to align labels and controls.
-            // Increase widths so longer text doesn't get cut off.
             using var table = ImRaii.Table("FaderSettingsTable", 2, ImGuiTableFlags.SizingFixedFit | ImGuiTableFlags.NoSavedSettings);
             if (table.Success)
             {
-                // Adjust column widths to give more space to labels.
-                ImGui.TableSetupColumn("Label", ImGuiTableColumnFlags.WidthFixed, 300.0f * ImGuiHelpers.GlobalScale);
+                ImGui.TableSetupColumn("Label", ImGuiTableColumnFlags.WidthFixed);  // Auto-fit under SizingFixedFit.
                 ImGui.TableSetupColumn("Control", ImGuiTableColumnFlags.WidthFixed, 220.0f * ImGuiHelpers.GlobalScale);
 
                 //
@@ -228,8 +227,7 @@ public partial class ConfigWindow
         // Layout for element selection + config
         var startPos = ImGui.GetCursorPos();
         var style = ImGui.GetStyle();
-        var buttonWidth = ImGui.CalcTextSize("Context Action Hotbar   ?").X + style.FramePadding.X * 2 + style.ScrollbarSize;
-        var childSize = buttonWidth + style.WindowPadding.X * 2;
+        var (buttonWidth, childSize) = GetElementListSizes();
 
         #region Left Child : Element Selection
         using (var child = ImRaii.Child("ElementList", new Vector2(childSize, 0), true))
@@ -241,10 +239,8 @@ public partial class ConfigWindow
                     if (element.ShouldIgnoreElement())
                         continue;
 
-                    var buttonText = ElementUtil.GetElementName(element);
+                    var buttonText = GetElementListButtonText(element);
                     var tooltipText = element.TooltipForElement();
-                    if (!string.IsNullOrEmpty(tooltipText))
-                        buttonText += "   ?";
 
                     using var pushedStyle = ImRaii.PushStyle(ImGuiStyleVar.ButtonTextAlign, new Vector2(0, 0.5f));
 
@@ -524,5 +520,28 @@ public partial class ConfigWindow
         }
 
         Configuration.Save();
+    }
+
+    private static (float ButtonWidth, float ChildWidth) GetElementListSizes()
+    {
+        var style = ImGui.GetStyle();
+
+        var maxTextWidth = ElementUtil.OrderedElements
+            .Where(element => !element.ShouldIgnoreElement())
+            .Select(element => ImGui.CalcTextSize(GetElementListButtonText(element)).X)
+            .DefaultIfEmpty(0.0f)
+            .Max();
+
+        var buttonWidth = maxTextWidth + style.FramePadding.X * 2 + style.ScrollbarSize;
+        var childWidth = buttonWidth + style.WindowPadding.X * 2;
+        return (buttonWidth, childWidth);
+    }
+
+    private static string GetElementListButtonText(Element element)
+    {
+        var elementName = ElementUtil.GetElementName(element);
+        var tooltipText = element.TooltipForElement();
+
+        return string.IsNullOrEmpty(tooltipText) ? elementName : $"{elementName}{ElementTooltipIndicator}";
     }
 }
