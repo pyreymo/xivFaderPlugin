@@ -5,17 +5,11 @@ using System.Collections.Generic;
 
 namespace FaderPlugin.Data;
 
-public class ConfigEntry
+public class ConfigEntry(State state, Setting setting)
 {
-    public State state { get; set; }
-    public Setting setting { get; set; }
+    public State state { get; set; } = state;
+    public Setting setting { get; set; } = setting;
     public float Opacity { get; set; } = 1.0f;
-
-    public ConfigEntry(State state, Setting setting)
-    {
-        this.state = state;
-        this.setting = setting;
-    }
 }
 
 [Serializable]
@@ -42,10 +36,10 @@ public class Configuration : IPluginConfiguration
 
     public void Initialize()
     {
-        // Initialise the config.
         elementsConfig ??= [];
         FadeOverrides ??= [];
         DisabledElements ??= [];
+        HoverGroups ??= [];
         foreach (var element in Enum.GetValues<Element>())
         {
             if (!elementsConfig.ContainsKey(element))
@@ -55,6 +49,7 @@ public class Configuration : IPluginConfiguration
             if (!DisabledElements.ContainsKey(element))
                 DisabledElements[element] = false;
         }
+        FixSharedRuleGroupMembership();
         FixLegacyConfig();
         Save();
     }
@@ -80,6 +75,18 @@ public class Configuration : IPluginConfiguration
                     entry.setting = Setting.Show;
                 }
             }
+        }
+    }
+
+    private void FixSharedRuleGroupMembership()
+    {
+        var claimedElements = new HashSet<Element>();
+        foreach (var group in HoverGroups)
+        {
+            if (!group.SharedRules)
+                continue;
+
+            group.Elements.RemoveAll(element => !claimedElements.Add(element));
         }
     }
 

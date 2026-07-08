@@ -5,6 +5,7 @@ using Dalamud.Interface.Windowing;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
+using faderPlugin.Data;
 using faderPlugin.Resources;
 using FaderPlugin.Animation;
 using FaderPlugin.Data;
@@ -71,6 +72,7 @@ public class Plugin : IDalamudPlugin
     // Delay management Utility
     private readonly Dictionary<string, long> DelayTimers = [];
     private readonly Dictionary<string, ConfigEntry> LastNonDefaultEntry = [];
+    private readonly record struct RuleTarget(IReadOnlyList<ConfigEntry> Rules, bool Disabled, FadeOverride FadeOverride);
 
     // Enum Cache
     private static readonly Element[] AllElements = Enum.GetValues<Element>();
@@ -283,6 +285,9 @@ public class Plugin : IDalamudPlugin
 
         foreach (var group in Config.HoverGroups)
         {
+            if (!group.LinkHover)
+                continue;
+
             var groupAddonNames = AddonNameToElement
                 .Where(kvp => group.Elements.Contains(kvp.Value))
                 .Select(kvp => kvp.Key)
@@ -375,17 +380,17 @@ public class Plugin : IDalamudPlugin
         foreach (var addonName in AddonNameToElement.Keys)
         {
             var element = AddonNameToElement[addonName];
-            var elementConfig = Config.GetElementConfig(element);
+            var ruleTarget = ResolveRuleTarget(element);
             var currentAddonHovered = AddonHoverStates.TryGetValue(addonName, out var hovered) && hovered;
 
-            var candidate = GetCandidateConfig(addonName, elementConfig, currentAddonHovered);
+            var candidate = GetCandidateConfig(addonName, ruleTarget.Rules, currentAddonHovered);
             var currentAlpha = CurrentAlphas.TryGetValue(addonName, out var alpha) ? alpha : Config.DefaultAlpha;
             var targetAlpha = GetTargetAlpha(addonName, candidate, currentAddonHovered, currentAlpha);
 
             TargetAlphas[addonName] = targetAlpha;
 
             // animation
-            var transitionSpeed = GetTransitionSpeed(element, currentAlpha, targetAlpha);
+            var transitionSpeed = GetTransitionSpeed(ruleTarget, currentAlpha, targetAlpha);
             var duration = transitionSpeed > 0f ? (long)((1f / transitionSpeed) * 1000f) : 0L;
 
             if (duration <= 0)
@@ -411,14 +416,26 @@ public class Plugin : IDalamudPlugin
             }
 
             // visibility
-            var isElementDisabled = Config.DisabledElements.TryGetValue(element, out var disabled) && disabled;
-            var shouldHide = isElementDisabled && currentAlpha < 0.05f;
+            var shouldHide = ruleTarget.Disabled && currentAlpha < 0.05f;
             Addon.SetAddonVisibility(addonName, !shouldHide);
         }
     }
 
+    private RuleTarget ResolveRuleTarget(Element element)
+    {
+        var sharedGroup = Config.HoverGroups.FirstOrDefault(group => group.SharedRules && group.Elements.Contains(element));
+        if (sharedGroup != null)
+            return new RuleTarget(sharedGroup.GetRuleEntries(), sharedGroup.Disabled, sharedGroup.FadeOverride);
 
-    private ConfigEntry GetCandidateConfig(string addonName, List<ConfigEntry> elementConfig, bool isHovered)
+        var disabled = Config.DisabledElements.TryGetValue(element, out var isDisabled) && isDisabled;
+        var fadeOverride = Config.FadeOverrides.TryGetValue(element, out var elementFadeOverride)
+            ? elementFadeOverride
+            : new FadeOverride();
+
+        return new RuleTarget(Config.GetElementConfig(element), disabled, fadeOverride);
+    }
+
+    private ConfigEntry GetCandidateConfig(string addonName, IReadOnlyList<ConfigEntry> elementConfig, bool isHovered)
     {
         // Prefer Hover state when applicable.
         var candidate = isHovered
@@ -491,13 +508,13 @@ public class Plugin : IDalamudPlugin
         return targetAlpha;
     }
 
-    private float GetTransitionSpeed(Element element, float currentAlpha, float targetAlpha)
+    private float GetTransitionSpeed(RuleTarget ruleTarget, float currentAlpha, float targetAlpha)
     {
-        if (Config.FadeOverrides.TryGetValue(element, out var fadeOverride) && fadeOverride.UseCustomFadeTimes)
+        if (ruleTarget.FadeOverride.UseCustomFadeTimes)
         {
             return targetAlpha > currentAlpha
-                ? fadeOverride.EnterTransitionSpeedOverride
-                : fadeOverride.ExitTransitionSpeedOverride;
+                ? ruleTarget.FadeOverride.EnterTransitionSpeedOverride
+                : ruleTarget.FadeOverride.ExitTransitionSpeedOverride;
         }
 
         return targetAlpha > currentAlpha

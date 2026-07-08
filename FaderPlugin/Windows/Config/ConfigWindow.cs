@@ -8,12 +8,10 @@ namespace FaderPlugin.Windows.Config;
 
 public partial class ConfigWindow : Window, IDisposable
 {
-    private readonly Plugin Plugin;
     private readonly Configuration Configuration;
 
     public ConfigWindow(Plugin plugin) : base("Configuration##Fader")
     {
-        Plugin = plugin;
         Configuration = plugin.Config;
 
         SizeConstraints = new WindowSizeConstraints
@@ -32,7 +30,7 @@ public partial class ConfigWindow : Window, IDisposable
             return;
 
         Settings();
-        HoverGroups();
+        General();
         About();
     }
 }

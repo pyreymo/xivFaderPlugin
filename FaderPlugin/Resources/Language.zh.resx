@@ -37,7 +37,7 @@
     <value>关于</value>
   </data>
   <data name="TabSettings" xml:space="preserve">
-    <value>设置</value>
+    <value>规则</value>
   </data>
   <data name="SettingsGeneralHeader" xml:space="preserve">
     <value>通用设置</value>
@@ -69,17 +69,8 @@
   <data name="SettingsChatActivityTimeout" xml:space="preserve">
     <value>「有新聊天消息时」保持：</value>
   </data>
-  <data name="SettingsMultiSelectionHint" xml:space="preserve">
-    <value>提示：按住 Ctrl 键可选择多个组件一起编辑。右侧会以最先选中的组件为模板；修改规则后会应用到所有已选组件。</value>
-  </data>
   <data name="SettingsElementConfiguration" xml:space="preserve">
     <value>{0} 显示规则</value>
-  </data>
-  <data name="SettingsOthers" xml:space="preserve">
-    <value>其他</value>
-  </data>
-  <data name="SettingsSyncToElement" xml:space="preserve">
-    <value>用 {0} 的显示规则覆盖其他已选组件</value>
   </data>
   <data name="Seconds" xml:space="preserve">
     <value>秒</value>
@@ -326,6 +317,42 @@
   </data>
   <data name="HoverGroupNewGroup" xml:space="preserve">
     <value>新分组</value>
+  </data>
+  <data name="RuleGroupsHeader" xml:space="preserve">
+    <value>规则组</value>
+  </data>
+  <data name="RuleElementsHeader" xml:space="preserve">
+    <value>组件</value>
+  </data>
+  <data name="RuleGroupName" xml:space="preserve">
+    <value>组名</value>
+  </data>
+  <data name="RuleGroupConfiguration" xml:space="preserve">
+    <value>组规则</value>
+  </data>
+  <data name="RuleGroupLinkHover" xml:space="preserve">
+    <value>联动悬停</value>
+  </data>
+  <data name="RuleGroupLinkHoverTooltip" xml:space="preserve">
+    <value>悬停组内任意成员时，该组所有成员插件窗口都会进入「鼠标悬停时」状态。</value>
+  </data>
+  <data name="RuleGroupSharedRules" xml:space="preserve">
+    <value>共享规则</value>
+  </data>
+  <data name="RuleGroupSharedRulesTooltip" xml:space="preserve">
+    <value>组内成员持续使用该组的触发条件、透明度、禁用状态和淡入淡出设置，而不是各自保存的独立规则。</value>
+  </data>
+  <data name="RuleGroupInherited" xml:space="preserve">
+    <value>{0} 正在使用 {1} 的共享规则。</value>
+  </data>
+  <data name="RuleGroupIndependentRulesPreserved" xml:space="preserve">
+    <value>该组件自己的规则会被保留，离开共享规则组后会重新生效。</value>
+  </data>
+  <data name="RuleGroupEditGroup" xml:space="preserve">
+    <value>编辑规则组</value>
+  </data>
+  <data name="RuleGroupDetachKeepRules" xml:space="preserve">
+    <value>脱离组并保留当前效果</value>
   </data>
   <data name="HoverGroupsAddGroup" xml:space="preserve">
     <value>添加分组</value>

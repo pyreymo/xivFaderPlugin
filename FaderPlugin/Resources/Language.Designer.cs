@@ -626,7 +626,115 @@ namespace faderPlugin.Resources {
                 return ResourceManager.GetString("HoverGroupNewGroup", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Rule Groups.
+        /// </summary>
+        internal static string RuleGroupsHeader {
+            get {
+                return ResourceManager.GetString("RuleGroupsHeader", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Elements.
+        /// </summary>
+        internal static string RuleElementsHeader {
+            get {
+                return ResourceManager.GetString("RuleElementsHeader", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Group Name.
+        /// </summary>
+        internal static string RuleGroupName {
+            get {
+                return ResourceManager.GetString("RuleGroupName", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Group Rules.
+        /// </summary>
+        internal static string RuleGroupConfiguration {
+            get {
+                return ResourceManager.GetString("RuleGroupConfiguration", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Linked Hover.
+        /// </summary>
+        internal static string RuleGroupLinkHover {
+            get {
+                return ResourceManager.GetString("RuleGroupLinkHover", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Hovering any member activates Hover for every member addon in this group..
+        /// </summary>
+        internal static string RuleGroupLinkHoverTooltip {
+            get {
+                return ResourceManager.GetString("RuleGroupLinkHoverTooltip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Shared Rules.
+        /// </summary>
+        internal static string RuleGroupSharedRules {
+            get {
+                return ResourceManager.GetString("RuleGroupSharedRules", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Members use this group&apos;s conditions, opacity, disabled state, and fade settings instead of their own saved rules..
+        /// </summary>
+        internal static string RuleGroupSharedRulesTooltip {
+            get {
+                return ResourceManager.GetString("RuleGroupSharedRulesTooltip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is using shared rules from {1}..
+        /// </summary>
+        internal static string RuleGroupInherited {
+            get {
+                return ResourceManager.GetString("RuleGroupInherited", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The element&apos;s own rules are preserved and will be used again after it leaves the shared rules group..
+        /// </summary>
+        internal static string RuleGroupIndependentRulesPreserved {
+            get {
+                return ResourceManager.GetString("RuleGroupIndependentRulesPreserved", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Group.
+        /// </summary>
+        internal static string RuleGroupEditGroup {
+            get {
+                return ResourceManager.GetString("RuleGroupEditGroup", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Detach and Keep Current Rules.
+        /// </summary>
+        internal static string RuleGroupDetachKeepRules {
+            get {
+                return ResourceManager.GetString("RuleGroupDetachKeepRules", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Add Group.
         /// </summary>
@@ -889,25 +997,6 @@ namespace faderPlugin.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hint: You can select multiple elements to be edited at the same time.
-        ///Configuration of the element that was selected first will override the rest..
-        /// </summary>
-        internal static string SettingsMultiSelectionHint {
-            get {
-                return ResourceManager.GetString("SettingsMultiSelectionHint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to others.
-        /// </summary>
-        internal static string SettingsOthers {
-            get {
-                return ResourceManager.GetString("SettingsOthers", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Relative Opacity.
         /// </summary>
         internal static string SettingsRelativeOpacity {
@@ -933,15 +1022,6 @@ namespace faderPlugin.Resources {
         internal static string SettingsShow {
             get {
                 return ResourceManager.GetString("SettingsShow", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sync selected to {0}.
-        /// </summary>
-        internal static string SettingsSyncToElement {
-            get {
-                return ResourceManager.GetString("SettingsSyncToElement", resourceCulture);
             }
         }
         

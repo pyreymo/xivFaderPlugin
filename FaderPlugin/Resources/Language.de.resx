@@ -142,7 +142,7 @@
     <value>About</value>
   </data>
   <data name="TabSettings" xml:space="preserve">
-    <value>Einstellungen</value>
+    <value>Regeln</value>
   </data>
   <data name="SettingsGeneralHeader" xml:space="preserve">
     <value>Allgemeine Einstellungen</value>
@@ -174,19 +174,8 @@
   <data name="SettingsChatActivityTimeout" xml:space="preserve">
     <value>Chataktivitäts-Timeout</value>
   </data>
-  <data name="SettingsMultiSelectionHint" xml:space="preserve">
-    <value>Hinweis: Es können mehrere Elemente gleichzeitig ausgewählt und editiert werden. 
-Benutze dafür beim auswählen die STRG-Taste.
-Die Konfiguration vom ersten ausgewählten Element wird die restlichen überschreiben.</value>
-  </data>
   <data name="SettingsElementConfiguration" xml:space="preserve">
     <value>{0} Konfiguration</value>
-  </data>
-  <data name="SettingsOthers" xml:space="preserve">
-    <value>andere</value>
-  </data>
-  <data name="SettingsSyncToElement" xml:space="preserve">
-    <value>Synchronisiere ausgewählte Elemente mit {0}</value>
   </data>
   <data name="Seconds" xml:space="preserve">
     <value>Sekunden</value>
