@@ -41,36 +41,39 @@ public partial class ConfigWindow
                 DrawGroupList(buttonWidth);
 
                 ImGui.Separator();
-                DrawRuleTargetListHeader(Language.RuleElementsHeader, buttonWidth);
 
-                foreach (var element in ElementUtil.OrderedElements)
+                var elementsExpanded = ImGui.CollapsingHeader($"{Language.RuleElementsHeader}##RuleElements", ImGuiTreeNodeFlags.None);
+                if (elementsExpanded)
                 {
-                    if (element.ShouldIgnoreElement())
-                        continue;
-
-                    var buttonText = GetElementListButtonText(element);
-                    var tooltipText = element.TooltipForElement();
-
-                    using var pushedStyle = ImRaii.PushStyle(ImGuiStyleVar.ButtonTextAlign, new Vector2(0, 0.5f));
-
-                    var desiredButtonColor = ImGui.GetColorU32(ImGuiCol.Button);
-                    if (SelectedElement == element)
-                        desiredButtonColor = ImGui.GetColorU32(ImGuiCol.ButtonActive);
-
-                    var hasScrollbar = ImGui.GetScrollMaxY() > 0.0f;
-                    using var pushedColor = ImRaii.PushColor(ImGuiCol.Button, desiredButtonColor);
-                    if (ImGui.Button(buttonText, new Vector2(buttonWidth - (hasScrollbar ? style.ScrollbarSize : 0.0f), 0)))
+                    foreach (var element in ElementUtil.OrderedElements)
                     {
-                        ClearGroupSelection();
-                        SelectElement(element);
-                    }
+                        if (element.ShouldIgnoreElement())
+                            continue;
 
-                    if (ImGui.IsItemHovered())
-                    {
-                        if (!string.IsNullOrEmpty(tooltipText))
-                            Helper.Tooltip(tooltipText);
+                        var buttonText = GetElementListButtonText(element);
+                        var tooltipText = element.TooltipForElement();
 
-                        DrawAddonBounds(ElementUtil.GetAddonName(element));
+                        using var pushedStyle = ImRaii.PushStyle(ImGuiStyleVar.ButtonTextAlign, new Vector2(0, 0.5f));
+
+                        var desiredButtonColor = SelectedElement == element
+                            ? ImGui.GetColorU32(ImGuiCol.ButtonActive)
+                            : ImGui.GetColorU32(ImGuiCol.Button);
+
+                        var hasScrollbar = ImGui.GetScrollMaxY() > 0.0f;
+                        using var pushedColor = ImRaii.PushColor(ImGuiCol.Button, desiredButtonColor);
+                        if (ImGui.Button(buttonText, new Vector2(buttonWidth - (hasScrollbar ? style.ScrollbarSize : 0.0f), 0)))
+                        {
+                            ClearGroupSelection();
+                            SelectElement(element);
+                        }
+
+                        if (ImGui.IsItemHovered())
+                        {
+                            if (!string.IsNullOrEmpty(tooltipText))
+                                Helper.Tooltip(tooltipText);
+
+                            DrawAddonBounds(ElementUtil.GetAddonName(element));
+                        }
                     }
                 }
             }
