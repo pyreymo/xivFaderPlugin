@@ -90,6 +90,7 @@ public class Plugin : IDalamudPlugin
 
         Framework.Update += OnFrameworkUpdate;
         PluginInterface.UiBuilder.Draw += DrawUi;
+        PluginInterface.UiBuilder.OpenMainUi += DrawConfigUi;
         PluginInterface.UiBuilder.OpenConfigUi += DrawConfigUi;
 
         CommandManager.AddHandler(CommandName, new CommandInfo(FaderCommandHandler)
@@ -123,16 +124,23 @@ public class Plugin : IDalamudPlugin
 
     public void Dispose()
     {
-        // Clean up (unhide all elements & set Opacity to HUDLayout values)
-        RestoreGameOpacity();
+        // Stop receiving callbacks first.
+        PluginInterface.UiBuilder.Draw -= DrawUi;
+        PluginInterface.UiBuilder.OpenMainUi -= DrawConfigUi;
+        PluginInterface.UiBuilder.OpenConfigUi -= DrawConfigUi;
+
         PluginInterface.LanguageChanged -= LanguageChanged;
         Framework.Update -= OnFrameworkUpdate;
-        CommandManager.RemoveHandler(CommandName);
-        ChatGui.ChatMessage -= OnChatMessage;
+        ChatGui.ChatMessageUnhandled -= OnChatMessage;
         Config.OnSave -= OnConfigChanged;
 
-        ConfigWindow.Dispose();
+        CommandManager.RemoveHandler(CommandName);
+
+        // Restore game state before releasing the plugin UI.
+        RestoreGameOpacity();
+
         WindowSystem.RemoveWindow(ConfigWindow);
+        ConfigWindow.Dispose();
     }
 
 
