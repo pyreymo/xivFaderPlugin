@@ -1,7 +1,7 @@
-using Dalamud.Configuration;
-using faderPlugin.Data;
 using System;
 using System.Collections.Generic;
+using Dalamud.Configuration;
+using faderPlugin.Data;
 
 namespace FaderPlugin.Data;
 

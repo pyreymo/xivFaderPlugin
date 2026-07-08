@@ -1,15 +1,15 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+using Dalamud.Bindings.ImGui;
 using Dalamud.Interface;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Utility;
 using faderPlugin.Data;
-using faderPlugin.Resources;
 using FaderPlugin.Data;
-using Dalamud.Bindings.ImGui;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
+using faderPlugin.Resources;
 
 namespace FaderPlugin.Windows.Config;
 
@@ -123,7 +123,8 @@ public partial class ConfigWindow
             selectedGroup.Disabled,
             disabled => selectedGroup.Disabled = disabled,
             selectedGroup.FadeOverride,
-            () => SaveGroupRules(selectedGroup)); 
+            () => SaveGroupRules(selectedGroup)
+        );
     }
 
     private bool DrawGroupHeader(HoverGroup selectedGroup)
@@ -185,7 +186,11 @@ public partial class ConfigWindow
     {
         ImGui.TextUnformatted($"{Language.HoverGroupsElements}:");
 
-        using var table = ImRaii.Table($"GroupElementsTable{SelectedGroupIndex}", 2, ImGuiTableFlags.NoBordersInBody | ImGuiTableFlags.Resizable);
+        using var table = ImRaii.Table(
+            $"GroupElementsTable{SelectedGroupIndex}",
+            2,
+            ImGuiTableFlags.NoBordersInBody | ImGuiTableFlags.Resizable
+        );
         if (!table.Success)
             return;
 
@@ -239,8 +244,8 @@ public partial class ConfigWindow
         return true;
     }
 
-    private HoverGroup? GetSharedRuleGroup(Element element)
-        => Configuration.HoverGroups.FirstOrDefault(group => group.SharedRules && group.Elements.Contains(element));
+    private HoverGroup? GetSharedRuleGroup(Element element) =>
+        Configuration.HoverGroups.FirstOrDefault(group => group.SharedRules && group.Elements.Contains(element));
 
     private void AddElementToGroup(HoverGroup group, Element element)
     {
@@ -279,15 +284,15 @@ public partial class ConfigWindow
         Configuration.Save();
     }
 
-    private static List<ConfigEntry> CloneRules(IEnumerable<ConfigEntry> rules)
-        => rules.Select(entry => new ConfigEntry(entry.state, entry.setting) { Opacity = entry.Opacity }).ToList();
+    private static List<ConfigEntry> CloneRules(IEnumerable<ConfigEntry> rules) =>
+        rules.Select(entry => new ConfigEntry(entry.state, entry.setting) { Opacity = entry.Opacity }).ToList();
 
-    private static FadeOverride CloneFadeOverride(FadeOverride fadeOverride)
-        => new()
+    private static FadeOverride CloneFadeOverride(FadeOverride fadeOverride) =>
+        new()
         {
             UseCustomFadeTimes = fadeOverride.UseCustomFadeTimes,
             EnterTransitionSpeedOverride = fadeOverride.EnterTransitionSpeedOverride,
-            ExitTransitionSpeedOverride = fadeOverride.ExitTransitionSpeedOverride
+            ExitTransitionSpeedOverride = fadeOverride.ExitTransitionSpeedOverride,
         };
 
     private static void DrawAddonBounds(IEnumerable<string> addonNames)

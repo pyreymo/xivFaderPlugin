@@ -1,8 +1,8 @@
+using System;
+using System.Numerics;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Interface.Windowing;
 using FaderPlugin.Data;
-using System;
-using System.Numerics;
 
 namespace FaderPlugin.Windows.Config;
 
@@ -10,14 +10,15 @@ public partial class ConfigWindow : Window, IDisposable
 {
     private readonly Configuration Configuration;
 
-    public ConfigWindow(Plugin plugin) : base("Configuration##Fader")
+    public ConfigWindow(Plugin plugin)
+        : base("Configuration##Fader")
     {
         Configuration = plugin.Config;
 
         SizeConstraints = new WindowSizeConstraints
         {
             MinimumSize = new Vector2(730, 670),
-            MaximumSize = new Vector2(float.MaxValue, float.MaxValue)
+            MaximumSize = new Vector2(float.MaxValue, float.MaxValue),
         };
     }
 

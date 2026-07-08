@@ -1,8 +1,8 @@
-using faderPlugin.Data;
-using faderPlugin.Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using faderPlugin.Data;
+using faderPlugin.Resources;
 
 namespace FaderPlugin.Data;
 
@@ -45,23 +45,16 @@ public class HoverGroup
         }
 
         ConditionalRules = conditionalRules;
-        DefaultRule = defaultRule
-            ?? throw new InvalidOperationException("The rule list must contain a default rule.");
+        DefaultRule = defaultRule ?? throw new InvalidOperationException("The rule list must contain a default rule.");
     }
 
     private static ConfigEntry CreateDefaultRule()
     {
-        return new ConfigEntry(State.Default, Setting.Show)
-        {
-            Opacity = 1.0f,
-        };
+        return new ConfigEntry(State.Default, Setting.Show) { Opacity = 1.0f };
     }
 
     private static ConfigEntry CloneRule(ConfigEntry rule)
     {
-        return new ConfigEntry(rule.state, rule.setting)
-        {
-            Opacity = rule.Opacity,
-        };
+        return new ConfigEntry(rule.state, rule.setting) { Opacity = rule.Opacity };
     }
 }

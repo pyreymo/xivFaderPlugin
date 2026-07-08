@@ -1,10 +1,10 @@
+using System;
+using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
-using faderPlugin.Resources;
 using FaderPlugin.Data;
-using Dalamud.Bindings.ImGui;
-using System;
+using faderPlugin.Resources;
 
 namespace FaderPlugin.Windows.Config;
 
@@ -176,9 +176,8 @@ public partial class ConfigWindow
 
         ImGui.TableNextColumn();
         ImGui.SetNextItemWidth(-1);
-        var enterTransitionTimeMs = Configuration.EnterTransitionSpeed > AlphaTolerance
-            ? (1.0f / Configuration.EnterTransitionSpeed) * 1000.0f
-            : 1000.0f;
+        var enterTransitionTimeMs =
+            Configuration.EnterTransitionSpeed > AlphaTolerance ? (1.0f / Configuration.EnterTransitionSpeed) * 1000.0f : 1000.0f;
         if (Helper.SliderFloatDiscrete("##enter_transition_time_ms", ref enterTransitionTimeMs, 10.0f, 2000.0f, 10.0f, "{0:0} ms"))
         {
             Configuration.EnterTransitionSpeed = 1000.0f / enterTransitionTimeMs;
@@ -195,9 +194,8 @@ public partial class ConfigWindow
 
         ImGui.TableNextColumn();
         ImGui.SetNextItemWidth(-1);
-        var exitTransitionTimeMs = Configuration.ExitTransitionSpeed > AlphaTolerance
-            ? (1.0f / Configuration.ExitTransitionSpeed) * 1000.0f
-            : 1000.0f;
+        var exitTransitionTimeMs =
+            Configuration.ExitTransitionSpeed > AlphaTolerance ? (1.0f / Configuration.ExitTransitionSpeed) * 1000.0f : 1000.0f;
         if (Helper.SliderFloatDiscrete("##exit_transition_time_ms", ref exitTransitionTimeMs, 10.0f, 2000.0f, 10.0f, "{0:0} ms"))
         {
             Configuration.ExitTransitionSpeed = 1000.0f / exitTransitionTimeMs;

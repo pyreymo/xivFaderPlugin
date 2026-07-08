@@ -141,7 +141,7 @@ public partial class ConfigWindow
         }
     }
 
-    private void DrawRuleStateCombo(ConfigEntry rule, Action save)
+    private static void DrawRuleStateCombo(ConfigEntry rule, Action save)
     {
         ImGui.SetNextItemWidth(-1.0f);
         var stateName = StateUtil.GetStateName(rule.state);
@@ -187,7 +187,7 @@ public partial class ConfigWindow
         return ImGui.Button($"{icon.ToIconString()}##{id}", buttonSize);
     }
 
-    private void DrawAddRuleButton(List<ConfigEntry> rules, Action save)
+    private static void DrawAddRuleButton(List<ConfigEntry> rules, Action save)
     {
         ImGui.Spacing();
         if (ImGui.Button($"+  {Language.SettingsAddRule}##add-rule"))
@@ -215,7 +215,7 @@ public partial class ConfigWindow
         }
     }
 
-    private void DrawDefaultRule(List<ConfigEntry> rules, Action save)
+    private static void DrawDefaultRule(List<ConfigEntry> rules, Action save)
     {
         var defaultRule = rules.First(rule => rule.state == State.Default);
         var tableFlags = ImGuiTableFlags.SizingStretchProp | ImGuiTableFlags.RowBg | ImGuiTableFlags.NoSavedSettings;
@@ -238,7 +238,7 @@ public partial class ConfigWindow
         DrawRuleOpacity(defaultRule, save);
     }
 
-    private void DrawFadeOverrideEditor(FadeOverride fadeOverride, Action save)
+    private static void DrawFadeOverrideEditor(FadeOverride fadeOverride, Action save)
     {
         var useOverride = fadeOverride.UseCustomFadeTimes;
         if (ImGui.Checkbox(Language.SettingsFadeOverride, ref useOverride))
