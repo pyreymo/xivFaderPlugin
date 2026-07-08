@@ -1,6 +1,9 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using Dalamud.Bindings.ImGui;
+using Dalamud.Interface;
+using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using FaderPlugin.Data;
 using faderPlugin.Resources;
@@ -34,6 +37,58 @@ public partial class ConfigWindow
         }
     }
 
+    private void DrawGroupList(float buttonWidth)
+    {
+        var style = ImGui.GetStyle();
+        DrawRuleTargetListHeader(Language.RuleGroupsHeader, buttonWidth, true);
+
+        for (var i = 0; i < Configuration.HoverGroups.Count; i++)
+        {
+            var group = Configuration.HoverGroups[i];
+            var label = $"{GetGroupListButtonText(group)}##RuleGroup{i}";
+
+            using var pushedStyle = ImRaii.PushStyle(ImGuiStyleVar.ButtonTextAlign, new Vector2(0, 0.5f));
+
+            var desiredButtonColor =
+                SelectedGroupIndex == i ? ImGui.GetColorU32(ImGuiCol.ButtonActive) : ImGui.GetColorU32(ImGuiCol.Button);
+
+            var hasScrollbar = ImGui.GetScrollMaxY() > 0.0f;
+            using var pushedColor = ImRaii.PushColor(ImGuiCol.Button, desiredButtonColor);
+
+            if (ImGui.Button(label, new Vector2(buttonWidth - (hasScrollbar ? style.ScrollbarSize : 0.0f), 0)))
+                SelectGroup(i);
+
+            if (ImGui.IsItemHovered())
+            {
+                var addonNames = group.Elements.SelectMany(ElementUtil.GetAddonName).ToArray();
+                DrawAddonBounds(addonNames);
+            }
+        }
+    }
+
+    private void DrawRuleTargetListHeader(string label, float buttonWidth, bool showAddGroup = false)
+    {
+        var startX = ImGui.GetCursorPosX();
+        ImGui.TextUnformatted(label);
+        if (!showAddGroup)
+            return;
+
+        var icon = FontAwesomeIcon.Plus.ToIconString();
+        var hasScrollbar = ImGui.GetScrollMaxY() > 0.0f;
+        var headerWidth = buttonWidth - (hasScrollbar ? ImGui.GetStyle().ScrollbarSize : 0.0f);
+        var buttonSize = new Vector2(ImGui.GetFrameHeight(), ImGui.GetFrameHeight());
+        ImGui.SameLine(startX + headerWidth - buttonSize.X);
+
+        using (ImRaii.PushFont(UiBuilder.IconFont))
+        {
+            if (ImGui.Button($"{icon}##AddRuleGroup", buttonSize))
+                AddGroup();
+        }
+
+        if (ImGui.IsItemHovered())
+            Helper.Tooltip(Language.HoverGroupsAddGroup);
+    }
+
     private void DrawElementListItem(Element element, float buttonWidth, float scrollbarSize)
     {
         var buttonText = GetElementListButtonText(element);
@@ -58,29 +113,6 @@ public partial class ConfigWindow
             Helper.Tooltip(tooltipText);
 
         DrawAddonBounds(ElementUtil.GetAddonName(element));
-    }
-
-    private void ClearElementSelection()
-    {
-        SelectedElement = null;
-    }
-
-    private void SelectElement(Element element)
-    {
-        SelectedElement = element;
-        SelectedConfig = Configuration.GetElementConfig(element);
-    }
-
-    private void SaveSelectedElementConfig()
-    {
-        if (SelectedElement == null)
-            return;
-
-        Configuration.elementsConfig[SelectedElement.Value] = SelectedConfig
-            .Select(entry => new ConfigEntry(entry.state, entry.setting) { Opacity = entry.Opacity })
-            .ToList();
-
-        Configuration.Save();
     }
 
     private (float ButtonWidth, float ChildWidth) GetRuleTargetListSizes()
@@ -111,5 +143,22 @@ public partial class ConfigWindow
         var tooltipText = element.TooltipForElement();
 
         return string.IsNullOrEmpty(tooltipText) ? elementName : $"{elementName}{ElementTooltipIndicator}";
+    }
+
+    private static string GetGroupListButtonText(HoverGroup group) => group.GroupName;
+
+    private static void DrawAddonBounds(IEnumerable<string> addonNames)
+    {
+        var color = ImGui.GetColorU32(ImGuiCol.ButtonActive);
+        var drawlist = ImGui.GetBackgroundDrawList();
+
+        foreach (var addonName in addonNames)
+        {
+            var addonPosition = Addon.GetAddonPosition(addonName);
+            if (!addonPosition.IsPresent)
+                continue;
+
+            drawlist.AddRect(addonPosition.Start, addonPosition.End, color, 0, ImDrawFlags.None, 5.0f * ImGuiHelpers.GlobalScale);
+        }
     }
 }

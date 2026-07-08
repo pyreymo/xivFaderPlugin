@@ -137,11 +137,11 @@ public partial class ConfigWindow
             Configuration.DefaultDelayEnabled = defaultDelayEnabled;
             Configuration.Save();
         }
-        ImGui.SameLine();
-        ImGui.SetNextItemWidth(-1);
         if (!defaultDelayEnabled)
             return;
 
+        ImGui.SameLine();
+        ImGui.SetNextItemWidth(-1);
         var idleDelay = (float)TimeSpan.FromMilliseconds(Configuration.DefaultDelay).TotalSeconds;
         if (ImGui.SliderFloat("##default_delay", ref idleDelay, 0.1f, 15f, $"%.1f {Language.Seconds}"))
         {

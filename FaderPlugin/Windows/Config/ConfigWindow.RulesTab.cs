@@ -12,8 +12,7 @@ public partial class ConfigWindow
 {
     private List<ConfigEntry> SelectedConfig = [];
     private Element? SelectedElement;
-    private const float AlphaTolerance = 1f / 255f;
-    private Constants.OverrideKeys CurrentOverrideKey => (Constants.OverrideKeys)Configuration.OverrideKey;
+    private int SelectedGroupIndex = -1;
 
     private void Settings()
     {
@@ -29,16 +28,20 @@ public partial class ConfigWindow
 
         ImGui.SetCursorPos(startPos with { X = startPos.X + childSize });
         using var contentChild = ImRaii.Child("ConfigPage", Vector2.Zero, true);
-
         if (!contentChild.Success)
             return;
 
         if (SelectedGroupIndex >= 0)
         {
-            DrawSelectedGroupSettings();
+            DrawSelectedGroupRules();
             return;
         }
 
+        DrawSelectedElementRules();
+    }
+
+    private void DrawSelectedElementRules()
+    {
         if (SelectedElement == null)
             return;
 

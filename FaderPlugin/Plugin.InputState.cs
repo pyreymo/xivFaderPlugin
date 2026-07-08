@@ -3,7 +3,6 @@ using Dalamud.Game.Chat;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.GamePad;
 using Dalamud.Game.ClientState.Objects.Enums;
-using faderPlugin.Data;
 using FaderPlugin.Data;
 
 namespace FaderPlugin;

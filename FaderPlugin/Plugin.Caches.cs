@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using faderPlugin.Data;
 using FaderPlugin.Data;
 
 namespace FaderPlugin;

@@ -9,6 +9,8 @@ namespace FaderPlugin.Windows.Config;
 public partial class ConfigWindow : Window, IDisposable
 {
     private readonly Configuration Configuration;
+    private const float AlphaTolerance = 1f / 255f;
+    private Constants.OverrideKeys CurrentOverrideKey => (Constants.OverrideKeys)Configuration.OverrideKey;
 
     public ConfigWindow(Plugin plugin)
         : base("Configuration##Fader")
