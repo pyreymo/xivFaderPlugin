@@ -1330,5 +1330,32 @@ namespace faderPlugin.Resources {
                 return ResourceManager.GetString("TabSettings", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Add rule.
+        /// </summary>
+        internal static string SettingsAddRule {
+            get {
+                return ResourceManager.GetString("SettingsAddRule", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Actions.
+        /// </summary>
+        internal static string SettingsRuleActions {
+            get {
+                return ResourceManager.GetString("SettingsRuleActions", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to State.
+        /// </summary>
+        internal static string SettingsRuleState {
+            get {
+                return ResourceManager.GetString("SettingsRuleState", resourceCulture);
+            }
+        }
     }
 }

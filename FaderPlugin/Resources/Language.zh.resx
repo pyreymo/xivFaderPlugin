@@ -437,4 +437,13 @@
   <data name="ElementCosmicAnnouncements" xml:space="preserve">
     <value>宇宙探索信息</value>
   </data>
+  <data name="SettingsRuleState" xml:space="preserve">
+    <value>触发条件</value>
+  </data>
+  <data name="SettingsRuleActions" xml:space="preserve">
+    <value>操作</value>
+  </data>
+  <data name="SettingsAddRule" xml:space="preserve">
+    <value>添加规则</value>
+  </data>
 </root>

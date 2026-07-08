@@ -542,4 +542,13 @@ E.g., native 60% * plugin 50% → resulting UI at 30%.</value>
   <data name="ElementCosmicAnnouncements" xml:space="preserve">
     <value>Cosmic Exploration Info</value>
   </data>
+  <data name="SettingsRuleState" xml:space="preserve">
+    <value>State</value>
+  </data>
+  <data name="SettingsRuleActions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="SettingsAddRule" xml:space="preserve">
+    <value>Add rule</value>
+  </data>
 </root>

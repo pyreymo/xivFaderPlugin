@@ -12,19 +12,6 @@ public static class Helper
             ImGui.TextUnformatted(text);
     }
 
-    public static void WrappedText(string text)
-    {
-        using (ImRaii.TextWrapPos(0.0f))
-            ImGui.TextUnformatted(text);
-    }
-
-    public static void BulletText(string text)
-    {
-        ImGui.Bullet();
-        ImGui.SameLine();
-        ImGui.TextUnformatted(text);
-    }
-
     public static void Tooltip(string tooltip)
     {
         using (ImRaii.Tooltip())

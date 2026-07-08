@@ -104,195 +104,260 @@ public partial class ConfigWindow
         if (DrawSharedRuleElementNotice(selectedElement))
             return;
 
-        // Draw each condition row
-        for (var i = 0; i < SelectedConfig.Count; i++)
+        if (SelectedConfig.All(rule => rule.state != State.Default))
+            SelectedConfig.Add(new ConfigEntry(State.Default, Setting.Show));
+
+        using var ruleEditorId = ImRaii.PushId(selectedElement.ToString());
+
+        var defaultRule = SelectedConfig.First(rule => rule.state == State.Default);
+        var defaultTableFlags = ImGuiTableFlags.SizingStretchProp | ImGuiTableFlags.RowBg | ImGuiTableFlags.NoSavedSettings;
+
+        using (var defaultTable = ImRaii.Table("DefaultRuleTable", 3, defaultTableFlags))
         {
-            var elementState = SelectedConfig[i].state;
-
-            // State
-            var itemWidth = 200.0f * ImGuiHelpers.GlobalScale;
-            ImGui.SetNextItemWidth(itemWidth);
-
-            var stateName = StateUtil.GetStateName(elementState);
-            if (elementState == State.Default)
+            if (defaultTable.Success)
             {
-                ImGui.NewLine();
-                var pos = ImGui.GetCursorPos();
-                ImGui.TextUnformatted(stateName);
-                ImGui.SetCursorPos(pos with { X = pos.X + itemWidth + ImGui.GetStyle().ItemSpacing.X });
-            }
-            else
-            {
-                using (var combo = ImRaii.Combo($"##{elementName}-{i}-state", stateName))
+                var actionColumnWidth = ImGui.GetFrameHeight() * 3.0f + ImGui.GetStyle().ItemSpacing.X * 2.0f;
+                ImGui.TableSetupColumn("DefaultState", ImGuiTableColumnFlags.WidthFixed, RuleStateColumnWidth * ImGuiHelpers.GlobalScale);
+                ImGui.TableSetupColumn("DefaultOpacity", ImGuiTableColumnFlags.WidthStretch);
+                ImGui.TableSetupColumn("DefaultActions", ImGuiTableColumnFlags.WidthFixed, actionColumnWidth);
+
+                ImGui.TableNextRow();
+                ImGui.TableSetColumnIndex(0);
+                ImGui.AlignTextToFramePadding();
+                ImGui.TextUnformatted(StateUtil.GetStateName(State.Default));
+
+                ImGui.TableSetColumnIndex(1);
+                ImGui.SetNextItemWidth(-1.0f);
+                var opacity = defaultRule.Opacity;
+                if (ImGui.SliderFloat("##opacity", ref opacity, 0.0f, 1.0f, $"{Language.Opacity}: %.2f"))
                 {
-                    if (combo.Success)
-                    {
-                        foreach (var state in StateUtil.OrderedStates)
-                        {
-                            if (state is State.None or State.Default)
-                                continue;
+                    defaultRule.Opacity = opacity;
+                    SaveSelectedElementConfig();
+                }
+            }
+        }
 
-                            if (ImGui.Selectable(StateUtil.GetStateName(state)))
+        var conditionalIndexes = SelectedConfig
+            .Select((rule, index) => (rule, index))
+            .Where(entry => entry.rule.state != State.Default)
+            .Select(entry => entry.index)
+            .ToArray();
+
+        if (conditionalIndexes.Length > 0)
+        {
+            var actionButtonSize = ImGui.GetFrameHeight();
+            var actionColumnWidth = actionButtonSize * 3.0f + style.ItemSpacing.X * 2.0f;
+            var conditionalTableFlags =
+                ImGuiTableFlags.SizingStretchProp
+                | ImGuiTableFlags.RowBg
+                | ImGuiTableFlags.BordersInnerH
+                | ImGuiTableFlags.NoSavedSettings;
+
+            using var conditionalTable = ImRaii.Table("ConditionalRuleTable", 3, conditionalTableFlags);
+            if (conditionalTable.Success)
+            {
+                ImGui.TableSetupColumn(
+                    Language.SettingsRuleState,
+                    ImGuiTableColumnFlags.WidthFixed,
+                    RuleStateColumnWidth * ImGuiHelpers.GlobalScale
+                );
+                ImGui.TableSetupColumn(Language.Opacity, ImGuiTableColumnFlags.WidthStretch);
+                ImGui.TableSetupColumn(Language.SettingsRuleActions, ImGuiTableColumnFlags.WidthFixed, actionColumnWidth);
+                ImGui.TableHeadersRow();
+
+                for (var logicalIndex = 0; logicalIndex < conditionalIndexes.Length; logicalIndex++)
+                {
+                    var ruleIndex = conditionalIndexes[logicalIndex];
+                    var rule = SelectedConfig[ruleIndex];
+                    using var rowId = ImRaii.PushId(ruleIndex);
+
+                    ImGui.TableNextRow();
+                    ImGui.TableSetColumnIndex(0);
+                    ImGui.SetNextItemWidth(-1.0f);
+                    var stateName = StateUtil.GetStateName(rule.state);
+
+                    using (var combo = ImRaii.Combo("##state", stateName))
+                    {
+                        if (combo.Success)
+                        {
+                            foreach (var state in StateUtil.OrderedStates)
                             {
-                                SelectedConfig[i].state = state;
-                                SaveSelectedElementConfig();
+                                if (state is State.None or State.Default)
+                                    continue;
+
+                                var selected = state == rule.state;
+                                if (ImGui.Selectable(StateUtil.GetStateName(state), selected))
+                                {
+                                    rule.state = state;
+                                    SaveSelectedElementConfig();
+                                }
+
+                                if (selected)
+                                    ImGui.SetItemDefaultFocus();
                             }
                         }
                     }
-                }
 
-                ImGui.SameLine();
-            }
-
-            // Opacity
-            var opacity = SelectedConfig[i].Opacity;
-            ImGui.SameLine();
-            ImGui.SetNextItemWidth(itemWidth);
-            if (ImGui.SliderFloat($"##{elementName}-{i}-opacity", ref opacity, 0.0f, 1.0f, $"{Language.Opacity}: %.2f"))
-            {
-                SelectedConfig[i].Opacity = opacity;
-                SaveSelectedElementConfig();
-            }
-
-            // Default Disabled Checkbox
-            ImGui.SameLine();
-            if (SelectedConfig[i].state == State.Default)
-            {
-                var isDisabled = Configuration.DisabledElements.TryGetValue(selectedElement, out var disabled) && disabled;
-                if (ImGui.Checkbox($"##{elementName}-disabled", ref isDisabled))
-                {
-                    Configuration.DisabledElements[selectedElement] = isDisabled;
-                    SaveSelectedElementConfig();
-                }
-                ImGui.SameLine();
-                ImGui.TextUnformatted(Language.SettingsDisable);
-                ImGuiComponents.HelpMarker(Language.SettingsDisableTooltip);
-            }
-
-            // If not default, show reordering & delete buttons
-            if (elementState != State.Default)
-            {
-                ImGui.SameLine();
-                using var innerFont = ImRaii.PushFont(UiBuilder.IconFont);
-                if (ImGui.Button($"{FontAwesomeIcon.ArrowUp.ToIconString()}##{elementName}-{i}-up"))
-                {
-                    if (i > 0)
+                    ImGui.TableSetColumnIndex(1);
+                    ImGui.SetNextItemWidth(-1.0f);
+                    var opacity = rule.Opacity;
+                    if (ImGui.SliderFloat("##opacity", ref opacity, 0.0f, 1.0f, $"{Language.Opacity}: %.2f"))
                     {
-                        var swap1 = SelectedConfig[i - 1];
-                        var swap2 = SelectedConfig[i];
-                        if (swap1.state != State.Default && swap2.state != State.Default)
-                        {
-                            SelectedConfig[i] = swap1;
-                            SelectedConfig[i - 1] = swap2;
-                            SaveSelectedElementConfig();
-                        }
+                        rule.Opacity = opacity;
+                        SaveSelectedElementConfig();
                     }
-                }
 
-                ImGui.SameLine();
-                if (ImGui.Button($"{FontAwesomeIcon.ArrowDown.ToIconString()}##{elementName}-{i}-down"))
-                {
-                    if (i < SelectedConfig.Count - 1)
+                    ImGui.TableSetColumnIndex(2);
+                    bool moveUp;
+                    using (ImRaii.Disabled(logicalIndex <= 0))
+                    using (ImRaii.PushFont(UiBuilder.IconFont))
+                        moveUp = ImGui.Button($"{FontAwesomeIcon.ArrowUp.ToIconString()}##move-up", new Vector2(actionButtonSize));
+
+                    ImGui.SameLine();
+                    bool moveDown;
+                    using (ImRaii.Disabled(logicalIndex >= conditionalIndexes.Length - 1))
+                    using (ImRaii.PushFont(UiBuilder.IconFont))
+                        moveDown = ImGui.Button($"{FontAwesomeIcon.ArrowDown.ToIconString()}##move-down", new Vector2(actionButtonSize));
+
+                    ImGui.SameLine();
+                    bool delete;
+                    using (ImRaii.PushFont(UiBuilder.IconFont))
+                        delete = ImGui.Button($"{FontAwesomeIcon.TrashAlt.ToIconString()}##delete", new Vector2(actionButtonSize));
+
+                    if (moveUp)
                     {
-                        var swap1 = SelectedConfig[i + 1];
-                        var swap2 = SelectedConfig[i];
-                        if (swap1.state != State.Default && swap2.state != State.Default)
-                        {
-                            SelectedConfig[i] = swap1;
-                            SelectedConfig[i + 1] = swap2;
-                            SaveSelectedElementConfig();
-                        }
+                        var previousRuleIndex = conditionalIndexes[logicalIndex - 1];
+                        (SelectedConfig[previousRuleIndex], SelectedConfig[ruleIndex]) =
+                            (SelectedConfig[ruleIndex], SelectedConfig[previousRuleIndex]);
+                        SaveSelectedElementConfig();
+                        break;
                     }
-                }
 
-                ImGui.SameLine();
-                if (ImGui.Button($"{FontAwesomeIcon.TrashAlt.ToIconString()}##{elementName}-{i}-delete"))
-                {
-                    SelectedConfig.RemoveAt(i);
-                    SaveSelectedElementConfig();
+                    if (moveDown)
+                    {
+                        var nextRuleIndex = conditionalIndexes[logicalIndex + 1];
+                        (SelectedConfig[nextRuleIndex], SelectedConfig[ruleIndex]) =
+                            (SelectedConfig[ruleIndex], SelectedConfig[nextRuleIndex]);
+                        SaveSelectedElementConfig();
+                        break;
+                    }
+
+                    if (delete)
+                    {
+                        SelectedConfig.RemoveAt(ruleIndex);
+                        SaveSelectedElementConfig();
+                        break;
+                    }
                 }
             }
         }
 
-        // Add new condition row
+        ImGui.Spacing();
+        if (ImGui.Button($"+  {Language.SettingsAddRule}##add-rule"))
+            ImGui.OpenPopup("AddRulePopup");
+
+        using (var popup = ImRaii.Popup("AddRulePopup"))
+        {
+            if (popup.Success)
+            {
+                foreach (var state in StateUtil.OrderedStates)
+                {
+                    if (state is State.None or State.Default)
+                        continue;
+
+                    if (!ImGui.Selectable(StateUtil.GetStateName(state)))
+                        continue;
+
+                    var defaultIndex = SelectedConfig.FindIndex(rule => rule.state == State.Default);
+                    if (defaultIndex < 0)
+                        defaultIndex = SelectedConfig.Count;
+
+                    SelectedConfig.Insert(defaultIndex, new ConfigEntry(state, Setting.Show));
+                    SaveSelectedElementConfig();
+                    ImGui.CloseCurrentPopup();
+                }
+            }
+        }
+
+        ImGui.Spacing();
+
+        var isDisabled = Configuration.DisabledElements.TryGetValue(selectedElement, out var elementDisabled) && elementDisabled;
+        if (ImGui.Checkbox(Language.SettingsDisable, ref isDisabled))
+        {
+            Configuration.DisabledElements[selectedElement] = isDisabled;
+            SaveSelectedElementConfig();
+        }
+
         ImGui.SameLine();
-        using (ImRaii.PushFont(UiBuilder.IconFont))
-        {
-            if (ImGui.Button($"{FontAwesomeIcon.Plus.ToIconString()}##{elementName}-add"))
-            {
-                SelectedConfig.Add(new ConfigEntry(State.None, Setting.Show));
-                var swap1 = SelectedConfig[^1];
-                var swap2 = SelectedConfig[^2];
-                SelectedConfig[^2] = swap1;
-                SelectedConfig[^1] = swap2;
-                SaveSelectedElementConfig();
-            }
-        }
+        ImGuiComponents.HelpMarker(Language.SettingsDisableTooltip);
 
-        // Warning Label
-        var defaultDisabled = Configuration.DisabledElements.TryGetValue(selectedElement, out var isElementDisabled) && isElementDisabled;
-        var hoverPresent = SelectedConfig.Any(e => e.state == State.Hover);
-
-        if (defaultDisabled && hoverPresent)
+        if (isDisabled && SelectedConfig.Any(rule => rule.state == State.Hover))
         {
-            Helper.TextColored(ImGuiColors.DalamudRed, Language.StateWarning);
-        }
-        else
-        {   // spacing & prevents Layout shift when the warning appears
-            ImGui.NewLine();
-        }
-        // Fade Setting Overrides
-        using var overrideTable = ImRaii.Table("FadeOverrideTable", 2, ImGuiTableFlags.SizingFixedFit | ImGuiTableFlags.NoSavedSettings);
-        if (overrideTable.Success)
-        {
-            ImGui.TableSetupColumn("Label", ImGuiTableColumnFlags.WidthFixed, 200.0f * ImGuiHelpers.GlobalScale);
-            ImGui.TableSetupColumn("Controls", ImGuiTableColumnFlags.WidthFixed, 200.0f * ImGuiHelpers.GlobalScale);
-            ImGui.TableNextRow();
-            ImGui.TableNextColumn();
-            ImGui.TextUnformatted(Language.SettingsFadeOverride);
             ImGui.SameLine();
-            var useOverride = Configuration.FadeOverrides[selectedElement].UseCustomFadeTimes;
-            if (ImGui.Checkbox($"##{elementName}-fadeOverride", ref useOverride))
-            {
-                Configuration.FadeOverrides[selectedElement].UseCustomFadeTimes = useOverride;
-                Configuration.Save();
-            }
-            ImGui.TableNextColumn();
-            if (useOverride)
-            {
-                ImGui.TableNextRow();
-                ImGui.TableNextColumn();
-                ImGui.TextUnformatted(Language.SettingsEnterTransition);
-                ImGuiComponents.HelpMarker(Language.SettingsEnterTransitionTooltip);
-                ImGui.TableNextColumn();
+            Helper.TextColored(ImGuiColors.WarningForeground, Language.StateWarning);
+        }
 
-                var itemWidth = 200.0f * ImGuiHelpers.GlobalScale;
-                ImGui.SetNextItemWidth(itemWidth);
-                var fadeInTime = Configuration.FadeOverrides[selectedElement].EnterTransitionSpeedOverride > AlphaTolerance
-                    ? (1.0f / Configuration.FadeOverrides[selectedElement].EnterTransitionSpeedOverride) * 1000.0f
-                    : 1000.0f;
-                if (Helper.SliderFloatDiscrete($"##{elementName}-fadeIn", ref fadeInTime, 10.0f, 2000.0f, 10.0f, "{0:0} ms"))
-                {
-                    Configuration.FadeOverrides[selectedElement].EnterTransitionSpeedOverride = 1000.0f / fadeInTime;
-                    Configuration.Save();
-                }
+        ImGui.Spacing();
+        ImGui.Separator();
+        ImGui.Spacing();
 
-                ImGui.TableNextRow();
-                ImGui.TableNextColumn();
-                ImGui.TextUnformatted(Language.SettingsExitTransition);
-                ImGuiComponents.HelpMarker(Language.SettingsExitTransitionTooltip);
-                ImGui.TableNextColumn();
+        var fadeOverride = Configuration.FadeOverrides[selectedElement];
+        var useOverride = fadeOverride.UseCustomFadeTimes;
+        if (ImGui.Checkbox(Language.SettingsFadeOverride, ref useOverride))
+        {
+            fadeOverride.UseCustomFadeTimes = useOverride;
+            SaveSelectedElementConfig();
+        }
 
-                ImGui.SetNextItemWidth(itemWidth);
-                var fadeOutTime = Configuration.FadeOverrides[selectedElement].ExitTransitionSpeedOverride > AlphaTolerance
-                    ? (1.0f / Configuration.FadeOverrides[selectedElement].ExitTransitionSpeedOverride) * 1000.0f
-                    : 1000.0f;
-                if (Helper.SliderFloatDiscrete($"##{elementName}-fadeOut", ref fadeOutTime, 10.0f, 2000.0f, 10.0f, "{0:0} ms"))
-                {
-                    Configuration.FadeOverrides[selectedElement].ExitTransitionSpeedOverride = 1000.0f / fadeOutTime;
-                    Configuration.Save();
-                }
-            }
+        using var fadeControlsDisabled = ImRaii.Disabled(!useOverride);
+        var fadeTableFlags = ImGuiTableFlags.SizingFixedFit | ImGuiTableFlags.NoSavedSettings;
+        using var fadeTable = ImRaii.Table("FadeOverrideTable", 2, fadeTableFlags);
+        if (!fadeTable.Success)
+            return;
+
+        ImGui.TableSetupColumn("FadeLabel", ImGuiTableColumnFlags.WidthFixed, 200.0f * ImGuiHelpers.GlobalScale);
+        ImGui.TableSetupColumn(
+            "FadeControl",
+            ImGuiTableColumnFlags.WidthFixed,
+            FadeControlColumnWidth * ImGuiHelpers.GlobalScale
+        );
+
+        ImGui.TableNextRow();
+        ImGui.TableSetColumnIndex(0);
+        ImGui.AlignTextToFramePadding();
+        ImGui.TextUnformatted(Language.SettingsEnterTransition);
+        ImGui.SameLine();
+        ImGuiComponents.HelpMarker(Language.SettingsEnterTransitionTooltip);
+
+        ImGui.TableSetColumnIndex(1);
+        ImGui.SetNextItemWidth(FadeControlColumnWidth * ImGuiHelpers.GlobalScale);
+        var fadeInTime = fadeOverride.EnterTransitionSpeedOverride > AlphaTolerance
+            ? 1000.0f / fadeOverride.EnterTransitionSpeedOverride
+            : 1000.0f;
+
+        if (Helper.SliderFloatDiscrete("##fade-in", ref fadeInTime, 10.0f, 2000.0f, 10.0f, "{0:0} ms"))
+        {
+            fadeOverride.EnterTransitionSpeedOverride = 1000.0f / fadeInTime;
+            SaveSelectedElementConfig();
+        }
+
+        ImGui.TableNextRow();
+        ImGui.TableSetColumnIndex(0);
+        ImGui.AlignTextToFramePadding();
+        ImGui.TextUnformatted(Language.SettingsExitTransition);
+        ImGui.SameLine();
+        ImGuiComponents.HelpMarker(Language.SettingsExitTransitionTooltip);
+
+        ImGui.TableSetColumnIndex(1);
+        ImGui.SetNextItemWidth(FadeControlColumnWidth * ImGuiHelpers.GlobalScale);
+        var fadeOutTime = fadeOverride.ExitTransitionSpeedOverride > AlphaTolerance
+            ? 1000.0f / fadeOverride.ExitTransitionSpeedOverride
+            : 1000.0f;
+
+        if (Helper.SliderFloatDiscrete("##fade-out", ref fadeOutTime, 10.0f, 2000.0f, 10.0f, "{0:0} ms"))
+        {
+            fadeOverride.ExitTransitionSpeedOverride = 1000.0f / fadeOutTime;
+            SaveSelectedElementConfig();
         }
     }
 

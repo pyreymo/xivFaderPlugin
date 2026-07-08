@@ -223,7 +223,7 @@ public partial class ConfigWindow
             return false;
 
         ImGui.TextUnformatted(Language.RuleGroupInherited.Format(ElementUtil.GetElementName(element), group.GroupName));
-        Helper.WrappedText(Language.RuleGroupIndependentRulesPreserved);
+        ImGui.TextUnformatted(Language.RuleGroupIndependentRulesPreserved);
 
         var groupIndex = Configuration.HoverGroups.IndexOf(group);
         if (groupIndex >= 0 && ImGui.Button(Language.RuleGroupEditGroup))
