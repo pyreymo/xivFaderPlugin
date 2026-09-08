@@ -142,7 +142,7 @@
     <value>About</value>
   </data>
   <data name="TabSettings" xml:space="preserve">
-    <value>Settings</value>
+    <value>Rules</value>
   </data>
   <data name="SettingsGeneralHeader" xml:space="preserve">
     <value>General Settings</value>
@@ -174,18 +174,8 @@
   <data name="SettingsChatActivityTimeout" xml:space="preserve">
     <value>Chat activity timeout:</value>
   </data>
-  <data name="SettingsMultiSelectionHint" xml:space="preserve">
-    <value>Hint: You can select multiple elements to be edited at the same time.
-Configuration of the element that was selected first will override the rest.</value>
-  </data>
   <data name="SettingsElementConfiguration" xml:space="preserve">
     <value>{0} Configuration</value>
-  </data>
-  <data name="SettingsOthers" xml:space="preserve">
-    <value>others</value>
-  </data>
-  <data name="SettingsSyncToElement" xml:space="preserve">
-    <value>Sync selected to {0}</value>
   </data>
   <data name="Seconds" xml:space="preserve">
     <value>seconds</value>
@@ -433,6 +423,42 @@ Configuration of the element that was selected first will override the rest.</va
   <data name="HoverGroupNewGroup" xml:space="preserve">
     <value>New Group</value>
   </data>
+  <data name="RuleGroupsHeader" xml:space="preserve">
+    <value>Rule Groups</value>
+  </data>
+  <data name="RuleElementsHeader" xml:space="preserve">
+    <value>Elements</value>
+  </data>
+  <data name="RuleGroupName" xml:space="preserve">
+    <value>Group Name</value>
+  </data>
+  <data name="RuleGroupConfiguration" xml:space="preserve">
+    <value>Group Rules</value>
+  </data>
+  <data name="RuleGroupLinkHover" xml:space="preserve">
+    <value>Linked Hover</value>
+  </data>
+  <data name="RuleGroupLinkHoverTooltip" xml:space="preserve">
+    <value>Hovering any member activates Hover for every member addon in this group.</value>
+  </data>
+  <data name="RuleGroupSharedRules" xml:space="preserve">
+    <value>Shared Rules</value>
+  </data>
+  <data name="RuleGroupSharedRulesTooltip" xml:space="preserve">
+    <value>Members use this group's conditions, opacity, disabled state, and fade settings instead of their own saved rules.</value>
+  </data>
+  <data name="RuleGroupInherited" xml:space="preserve">
+    <value>{0} is using shared rules from {1}.</value>
+  </data>
+  <data name="RuleGroupIndependentRulesPreserved" xml:space="preserve">
+    <value>The element's own rules are preserved and will be used again after it leaves the shared rules group.</value>
+  </data>
+  <data name="RuleGroupEditGroup" xml:space="preserve">
+    <value>Edit Group</value>
+  </data>
+  <data name="RuleGroupDetachKeepRules" xml:space="preserve">
+    <value>Detach and Keep Current Rules</value>
+  </data>
   <data name="HoverGroupsAddGroup" xml:space="preserve">
     <value>Add Group</value>
   </data>
@@ -515,5 +541,14 @@ E.g., native 60% * plugin 50% → resulting UI at 30%.</value>
   </data>
   <data name="ElementCosmicAnnouncements" xml:space="preserve">
     <value>Cosmic Exploration Info</value>
+  </data>
+  <data name="SettingsRuleState" xml:space="preserve">
+    <value>State</value>
+  </data>
+  <data name="SettingsRuleActions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="SettingsAddRule" xml:space="preserve">
+    <value>Add rule</value>
   </data>
 </root>

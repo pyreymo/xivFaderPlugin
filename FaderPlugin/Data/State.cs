@@ -1,6 +1,6 @@
-using faderPlugin.Resources;
 using System;
 using System.Collections.Generic;
+using faderPlugin.Resources;
 
 namespace FaderPlugin.Data;
 
@@ -34,9 +34,8 @@ public enum State
     RightTrigger = 24,
     LeftBumper = 25,
     RightBumper = 26,
-    GatheringNodeTarget = 27
+    GatheringNodeTarget = 27,
 }
-
 
 public static class StateUtil
 {
@@ -72,7 +71,7 @@ public static class StateUtil
             State.LeftBumper => Language.StateLeftBumper,
             State.RightBumper => Language.StateRightBumper,
             State.GatheringNodeTarget => Language.StateGatheringNodeTarget,
-            _ => throw new ArgumentOutOfRangeException(nameof(state), state, null)
+            _ => throw new ArgumentOutOfRangeException(nameof(state), state, null),
         };
     }
 

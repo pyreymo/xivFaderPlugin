@@ -1,6 +1,6 @@
-using Dalamud.Interface.Utility.Raii;
-using Dalamud.Bindings.ImGui;
 using System.Numerics;
+using Dalamud.Bindings.ImGui;
+using Dalamud.Interface.Utility.Raii;
 
 namespace FaderPlugin.Windows;
 
@@ -10,19 +10,6 @@ public static class Helper
     {
         using (ImRaii.PushColor(ImGuiCol.Text, color))
             ImGui.TextUnformatted(text);
-    }
-
-    public static void WrappedText(string text)
-    {
-        using (ImRaii.TextWrapPos(0.0f))
-            ImGui.TextUnformatted(text);
-    }
-
-    public static void BulletText(string text)
-    {
-        ImGui.Bullet();
-        ImGui.SameLine();
-        ImGui.TextUnformatted(text);
     }
 
     public static void Tooltip(string tooltip)
@@ -46,7 +33,15 @@ public static class Helper
     /// <param name="format">A format string for displaying the value (e.g., "{0:0} ms").</param>
     /// <param name="itemWidth">Optional item width for the slider. Default is -1.</param>
     /// <returns>True if the user adjusted the slider, false otherwise.</returns>
-    public static bool SliderFloatDiscrete(string label, ref float value, float min, float max, float step, string format, float itemWidth = -1)
+    public static bool SliderFloatDiscrete(
+        string label,
+        ref float value,
+        float min,
+        float max,
+        float step,
+        string format,
+        float itemWidth = -1
+    )
     {
         var sliderMin = 0;
         var sliderMax = (int)((max - min) / step);
@@ -78,6 +73,4 @@ public static class Helper
 
         return valueChanged;
     }
-
-
 }

@@ -1,5 +1,5 @@
-﻿using Dalamud.Game.Text;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Dalamud.Game.Text;
 
 namespace FaderPlugin;
 
@@ -31,14 +31,10 @@ public static class Constants
         XivChatType.CrossLinkShell7,
         XivChatType.CrossLinkShell8,
         XivChatType.NoviceNetwork,
-        XivChatType.PvPTeam
+        XivChatType.PvPTeam,
     ];
 
-    public static readonly List<XivChatType> EmoteChatTypes =
-    [
-        XivChatType.CustomEmote,
-        XivChatType.StandardEmote
-    ];
+    public static readonly List<XivChatType> EmoteChatTypes = [XivChatType.CustomEmote, XivChatType.StandardEmote];
 
     public static readonly List<XivChatType> ImportantChatTypes =
     [
@@ -46,8 +42,7 @@ public static class Constants
         XivChatType.Echo,
         XivChatType.SystemError,
         XivChatType.SystemMessage,
-        XivChatType.ErrorMessage
-
+        XivChatType.ErrorMessage,
     ];
 
     public enum OverrideKeys

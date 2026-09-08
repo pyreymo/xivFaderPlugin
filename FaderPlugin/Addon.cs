@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Numerics;
 using Dalamud.Game.ClientState.GamePad;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
@@ -7,15 +10,11 @@ using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using Lumina.Misc;
-using System;
-using System.Collections.Generic;
-using System.Numerics;
 
 namespace FaderPlugin;
 
 public static unsafe class Addon
 {
-
     private static readonly AtkStage* Stage = AtkStage.Instance();
 
     private static readonly Dictionary<string, (short X, short Y)> StoredPositions = [];
@@ -32,10 +31,10 @@ public static unsafe class Addon
             return 1.0f;
 
         var data = config->ActiveDataSet;
-        var addons = data->HudLayoutConfigEntries;     // 440
-        var layouts = data->HudLayoutNames.Length;     // 4
+        var addons = data->HudLayoutConfigEntries; // 440
+        var layouts = data->HudLayoutNames.Length; // 4
         var addonsPerLayout = addons.Length / layouts; // 440/4 = 110
-        var currentLayout = data->CurrentHudLayout;    // 0..3
+        var currentLayout = data->CurrentHudLayout; // 0..3
         var start = currentLayout * addonsPerLayout;
         var end = start + addonsPerLayout;
 
@@ -45,8 +44,10 @@ public static unsafe class Addon
         var addonNameHash = ~rawHash;
         for (var i = start; i < end; i++)
         {
-            if (!addons[i].HasValue) continue;
-            if (addons[i].AddonNameHash != addonNameHash) continue;
+            if (!addons[i].HasValue)
+                continue;
+            if (addons[i].AddonNameHash != addonNameHash)
+                continue;
 
             // all special HudElements that don't have an opacity slider have an alpha value of 0. Elements that do have a slider only go down to ~0,1
             if (addons[i].Alpha == 0)
@@ -130,15 +131,13 @@ public static unsafe class Addon
 
     #region Addon Open/Close State
 
-    private static bool IsAddonOpen(string name)
-        => Plugin.GameGui.GetAddonByName(name) != nint.Zero;
+    private static bool IsAddonOpen(string name) => Plugin.GameGui.GetAddonByName(name) != nint.Zero;
 
     #endregion
 
     #region Focus / Chat / HUD
 
-    public static bool IsHudManagerOpen()
-        => IsAddonOpen("HudLayout");
+    public static bool IsHudManagerOpen() => IsAddonOpen("HudLayout");
 
     public static bool IsChatFocused()
     {
@@ -148,7 +147,6 @@ public static unsafe class Addon
             || IsAddonFocused("ChatLogPanel_2")
             || IsAddonFocused("ChatLogPanel_3");
     }
-
 
     private static bool IsAddonFocused(string name)
     {
@@ -168,9 +166,7 @@ public static unsafe class Addon
 
     #region Mouse / Movement Checks
 
-    public static bool IsMoving()
-        => AgentMap.Instance()->IsPlayerMoving;
-
+    public static bool IsMoving() => AgentMap.Instance()->IsPlayerMoving;
 
     public static bool AreHotbarsLocked()
     {
@@ -180,7 +176,7 @@ public static unsafe class Addon
             return true;
 
         var hotbarAddon = (AddonActionBar*)hotbar.Address;
-        var crossbarAddon = (AddonActionCross*)hotbar.Address;
+        var crossbarAddon = (AddonActionCross*)crossbar.Address;
 
         try
         {
@@ -198,21 +194,17 @@ public static unsafe class Addon
 
     #region Combat / World State Checks
 
-    public static bool IsWeaponUnsheathed()
-        => UIState.Instance()->WeaponState.IsUnsheathed;
+    public static bool IsWeaponUnsheathed() => UIState.Instance()->WeaponState.IsUnsheathed;
 
-    public static bool InSanctuary()
-        => TerritoryInfo.Instance()->InSanctuary;
+    public static bool InSanctuary() => TerritoryInfo.Instance()->InSanctuary;
 
-    public static bool InFate()
-        => FateManager.Instance()->CurrentFate != null;
+    public static bool InFate() => FateManager.Instance()->CurrentFate != null;
 
     #endregion
 
     #region Controller Input Check
 
-    public static bool IsControllerInputHeld(GamepadButtons button)
-        => Plugin.GamepadState.Raw(button) != 0;
+    public static bool IsControllerInputHeld(GamepadButtons button) => Plugin.GamepadState.Raw(button) != 0;
 
     #endregion
 
